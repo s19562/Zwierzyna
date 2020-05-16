@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Zwierzoki.DTOs;
 using Zwierzoki.Models;
+using Zwierzoki.ModelsF;
 using Zwierzoki.Service;
 
 namespace Zwierzoki.Controllers
@@ -18,13 +19,16 @@ namespace Zwierzoki.Controllers
 
         readonly IAnimalService _animalService;
         readonly IAddAnimaleService _addAnimaleService;
+        readonly s19562Context _context;
 
-        public AnimalController(IAnimalService service1 , IAddAnimaleService service2)
+        public AnimalController(IAnimalService service1 , IAddAnimaleService service2, s19562Context context)
         {
             _animalService = service1;
             _addAnimaleService = service2;
+            _context = context;
         }
 
+        /*
         [HttpGet]
         public IActionResult getZwierz(string sortBy)
         {
@@ -40,6 +44,7 @@ namespace Zwierzoki.Controllers
             }
 
         }
+        */
 
         [HttpPost]
         public IActionResult AddAnimal(AddAnimalRequest request)
@@ -59,7 +64,12 @@ namespace Zwierzoki.Controllers
 
         }
       
-            
+         
+        [HttpGet]
+        public IActionResult Get()
+        {
+            return Ok(_context.Animal.ToList());
+        }
 
 
        
