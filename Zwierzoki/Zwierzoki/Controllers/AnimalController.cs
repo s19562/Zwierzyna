@@ -9,6 +9,8 @@ using Zwierzoki.DTOs;
 using Zwierzoki.Models;
 using Zwierzoki.ModelsF;
 using Zwierzoki.Service;
+using Zwierzoki.Controllers;
+using System.ComponentModel;
 
 namespace Zwierzoki.Controllers
 {
@@ -19,9 +21,9 @@ namespace Zwierzoki.Controllers
 
         readonly IAnimalService _animalService;
         readonly IAddAnimaleService _addAnimaleService;
-        readonly s19562Context _context;
+        readonly EfAnimalDbService _context;
 
-        public AnimalController(IAnimalService service1 , IAddAnimaleService service2, s19562Context context)
+        public AnimalController(IAnimalService service1 , IAddAnimaleService service2, EfAnimalDbService context)
         {
             _animalService = service1;
             _addAnimaleService = service2;
@@ -65,14 +67,33 @@ namespace Zwierzoki.Controllers
         }
       
          
+        //lista animalsów zwrot
         [HttpGet]
-        public IActionResult Get()
+        public IActionResult GetAnimals()
         {
-            return Ok(_context.Animal.ToList());
+            return Ok(_context.GetAnimals());
         }
 
 
-       
+       //zmiana animalsa
+       [HttpPost]
+       public IActionResult ChangeAnimal(ModelsF.Animal animal)
+        {
+            string s = _context.ChangeAnimal(animal);
+            if (s == "error")
+                return BadRequest("ni ma zwierzoka");
+
+            return Ok(s);
+
+        }
+
+        [HttpPost("{id}")]
+        public IActionResult DeleteAnimal([FromRoute] int idAnimal)
+        {
+
+            string s = _context.DeleteAnimal(idAnimal);
+            return Ok(s);
+        }
 
 
 

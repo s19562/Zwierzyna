@@ -28,6 +28,7 @@ namespace Zwierzoki
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddScoped<IAnimalService, EfAnimalDbService>();
             services.AddDbContext<s19562Context>(opt =>
             {
                 opt.UseSqlServer("Data Source=db-mssql;Initial Catalog=s19562;Integrated Security=True");
