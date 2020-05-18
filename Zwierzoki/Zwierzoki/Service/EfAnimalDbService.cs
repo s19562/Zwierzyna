@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Zwierzoki.DTOs;
 using Zwierzoki.Models;
 using Zwierzoki.ModelsF;
 
@@ -51,8 +52,60 @@ namespace Zwierzoki.Service
             return _context.Animal.ToList();
         }
        
+        public List<Enrollment> GetEnrollments()
+        {
+            var enrollments = _context.Enrollment.ToList();
+            return enrollments;
+        }
+
+        public string EnrollStudent(EnrollStudentRequest request)
+        {
+            int res = _context.Studies.First(s => s.Name == request.Studies).IdStudy;
+
+            var idEnrollment = _context.Enrollment.Max(e => e.IdEnrollment) + 1;
+
+            _context.Enrollment.Add(new Enrollment
+            {
+                IdEnrollment = idEnrollment,
+                Semester =0,
+                IdStudy = (int)res,
+                StartDate = DateTime.Now
+
+            });
+
+            _context.Student.Add(new Student
+            {
+                IndexNumber = request.IndexNumber,
+                FirstName = request.FirstName,
+                LastName = request.LastName,
+                BirthDate = request.BirthDate,
+                IdEnrollment = idEnrollment
 
 
+            });
 
+            return "Koniec procedury";
+        }
+
+        public string PromoteStudents(PromoteStudentRequest request)
+        {
+
+            var xd = _context.Studies.First(s => s.Name == request.Studies).IdStudy;
+            var xdd = _context.Enrollment.Where(e => e.IdStudy == xd).Where(e => e.Semester == request.Semester);
+
+            if(xdd.Count() < 1)
+            {
+                return "Nie ma takiego Enrollment";
+            }
+
+            foreach(var stu in xdd)
+            {
+                stu.Semester += 1;
+            }
+
+            _context.SaveChanges();
+            return "Koniec procedury";
+
+        }
     }
 }

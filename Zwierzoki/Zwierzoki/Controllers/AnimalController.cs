@@ -95,7 +95,25 @@ namespace Zwierzoki.Controllers
             return Ok(s);
         }
 
+        [HttpGet]
+        public IActionResult GetEnrollments()
+        {
+            return Ok(_context.GetEnrollments());
+        }
 
+        [HttpPost]
+        public IActionResult EnrollStudent(EnrollStudentRequest request)
+        {
+            var s = _context.EnrollStudent(request);
+            return Ok(s);
+        }
+
+        [HttpPost("zdaj")]
+        public IActionResult PromoteStudents(PromoteStudentRequest request)
+        {
+            var s = _context.PromoteStudents(request);
+            return Ok(s);
+        }
 
     }
 }
