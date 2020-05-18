@@ -1,2 +1,2 @@
 # Zwierzyna
-Kolo proba
+teraz pracuje na tym bo w studencie syf był 
